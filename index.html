@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SandWich We Love — Os sabores que você conhece. A versão que você vai testar.</title>
+  <meta name="description" content="Receitas autorais inspiradas em clássicos populares. Testamos, você julga, a comunidade escolhe.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0a1a;
+      --bg-card: #1a1229;
+      --bg-soft: #241833;
+      --pink: #ff4d8d;
+      --orange: #ff7a45;
+      --yellow: #ffe566;
+      --mint: #00e5a8;
+      --purple: #a855f7;
+      --cyan: #22d3ee;
+      --text: #fff8f0;
+      --text-muted: #c4b5d4;
+      --border: rgba(255,255,255,0.1);
+      --radius: 22px;
+      --shadow: 0 16px 40px rgba(0,0,0,0.4);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Nunito', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Animated ambient blobs */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 15% 5%, rgba(255,77,141,0.22), transparent 55%),
+        radial-gradient(ellipse 55% 45% at 90% 15%, rgba(168,85,247,0.18), transparent 50%),
+        radial-gradient(ellipse 50% 40% at 50% 95%, rgba(0,229,168,0.12), transparent 45%),
+        radial-gradient(ellipse 40% 30% at 70% 60%, rgba(255,122,69,0.1), transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+      animation: blobPulse 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes blobPulse {
+      0% { opacity: 0.85; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.05); }
+    }
+
+    /* Floating particles */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      font-size: 1.1rem;
+      opacity: 0.35;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.4; }
+      90% { opacity: 0.25; }
+      100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ========== HEADER ========== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15,10,26,0.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.02rem;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-mark {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--pink), var(--orange));
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 16px rgba(255,77,141,0.45);
+      animation: logoBounce 2.8s ease-in-out infinite;
+    }
+
+    @keyframes logoBounce {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-4px) rotate(3deg); }
+    }
+
+    .logo span {
+      background: linear-gradient(90deg, #fff, var(--yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    nav {
+      display: none;
+    }
+
+    .btn-enter {
+      background: linear-gradient(135deg, rgba(255,77,141,0.2), rgba(168,85,247,0.2));
+      border: 1.5px solid rgba(255,77,141,0.45);
+      color: #fff;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 0.82rem;
+      padding: 9px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .btn-enter:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 20px rgba(255,77,141,0.4);
+      border-color: var(--pink);
+    }
+
+    /* ========== HERO ========== */
+    .hero {
+      padding: 24px 0 36px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(90deg, rgba(255,77,141,0.2), rgba(168,85,247,0.2));
+      border: 1px solid rgba(255,77,141,0.35);
+      color: var(--pink);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 7px 14px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+      animation: badgePop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    @keyframes badgePop {
+      from { opacity: 0; transform: scale(0.6); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.6rem, 7vw, 2.05rem);
+      font-weight: 700;
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      animation: fadeUp 0.7s ease 0.15s both;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(90deg, var(--yellow), var(--orange), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% auto;
+      animation: shine 4s linear infinite;
+    }
+
+    @keyframes shine {
+      to { background-position: 200% center; }
+    }
+
+    .hero-sub {
+      color: var(--text-muted);
+      font-size: 1.02rem;
+      font-weight: 600;
+      max-width: 340px;
+      margin: 0 auto 22px;
+      animation: fadeUp 0.7s ease 0.25s both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-image-wrap {
+      position: relative;
+      margin: 22px auto 26px;
+      max-width: 100%;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(255,77,141,0.25), 0 0 0 1px var(--border);
+      animation: fadeUp 0.8s ease 0.35s both;
+    }
+
+    .hero-image-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .hero-image-wrap:hover img {
+      transform: scale(1.03);
+    }
+
+    .hero-image-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(15,10,26,0.5) 0%, transparent 45%);
+      pointer-events: none;
+    }
+
+    /* Floating emoji around image */
+    .float-emoji {
+      position: absolute;
+      font-size: 1.6rem;
+      z-index: 2;
+      animation: floatEmoji 3.5s ease-in-out infinite;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    }
+
+    .float-emoji.e1 { top: 12%; left: 6%; animation-delay: 0s; }
+    .float-emoji.e2 { top: 18%; right: 8%; animation-delay: 0.8s; }
+    .float-emoji.e3 { bottom: 22%; left: 4%; animation-delay: 1.4s; }
+    .float-emoji.e4 { bottom: 18%; right: 6%; animation-delay: 2s; }
+
+    @keyframes floatEmoji {
+      0%, 100% { transform: translateY(0) rotate(-8deg); }
+      50% { transform: translateY(-10px) rotate(8deg); }
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 320px;
+      margin: 0 auto;
+      animation: fadeUp 0.7s ease 0.5s both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 1.02rem;
+      padding: 16px 22px;
+      border-radius: 16px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--pink), var(--orange));
+      color: #fff;
+      box-shadow: 0 10px 28px rgba(255,77,141,0.45);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 14px 32px rgba(255,77,141,0.55);
+    }
+
+    .btn-secondary {
+      background: var(--bg-soft);
+      color: var(--text);
+      border: 1.5px solid rgba(255,255,255,0.15);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--mint);
+      color: var(--mint);
+      transform: translateY(-2px);
+    }
+
+    /* ========== SECTIONS ========== */
+    section {
+      padding: 32px 0;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .section-title span {
+      background: linear-gradient(90deg, var(--mint), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* How it works */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.25s, box-shadow 0.25s;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .step:nth-child(1) { animation-delay: 0.1s; }
+    .step:nth-child(2) { animation-delay: 0.2s; }
+    .step:nth-child(3) { animation-delay: 0.3s; }
+
+    .step:hover {
+      transform: translateY(-4px) scale(1.01);
+      border-color: rgba(255,77,141,0.4);
+      box-shadow: 0 12px 28px rgba(255,77,141,0.15);
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 46px;
+      height: 46px;
+      background: linear-gradient(135deg, var(--pink), var(--orange));
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 6px 16px rgba(255,77,141,0.35);
+    }
+
+    .step-content h3 {
+      font-size: 1.08rem;
+      font-weight: 800;
+      margin-bottom: 3px;
+    }
+
+    .step-content p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* Top 6 */
+    .top6-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .top6-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 22px 12px 18px;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      animation: fadeUp 0.55s ease both;
+    }
+
+    .top6-card:nth-child(1) { animation-delay: 0.05s; }
+    .top6-card:nth-child(2) { animation-delay: 0.1s; }
+    .top6-card:nth-child(3) { animation-delay: 0.15s; }
+    .top6-card:nth-child(4) { animation-delay: 0.2s; }
+    .top6-card:nth-child(5) { animation-delay: 0.25s; }
+    .top6-card:nth-child(6) { animation-delay: 0.3s; }
+
+    .top6-card:hover {
+      transform: translateY(-6px) scale(1.04);
+      border-color: rgba(255,122,69,0.5);
+      box-shadow: 0 14px 30px rgba(255,122,69,0.2);
+    }
+
+    .top6-emoji {
+      font-size: 2.4rem;
+      margin-bottom: 8px;
+      display: block;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .top6-card:hover .top6-emoji {
+      transform: scale(1.2) rotate(-8deg);
+    }
+
+    .top6-card h4 {
+      font-size: 0.98rem;
+      font-weight: 800;
+      text-transform: capitalize;
+    }
+
+    .top6-card.surprise {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(255,77,141,0.15), rgba(168,85,247,0.12));
+      border-color: rgba(255,77,141,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .top6-card.surprise::before {
+      content: '✨';
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      font-size: 1.1rem;
+      animation: sparkle 1.8s ease-in-out infinite;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.3); }
+    }
+
+    /* Waitlist */
+    .waitlist {
+      background: linear-gradient(160deg, var(--bg-card), #221530);
+      border: 1.5px solid rgba(0,229,168,0.25);
+      border-radius: 24px;
+      padding: 28px 20px;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(0,229,168,0.08);
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .waitlist h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.35rem;
+      margin-bottom: 6px;
+    }
+
+    .waitlist p {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      background: rgba(15,10,26,0.7);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 15px 16px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input::placeholder {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    input:focus {
+      border-color: var(--mint);
+      box-shadow: 0 0 0 3px rgba(0,229,168,0.2);
+    }
+
+    .btn-waitlist {
+      width: 100%;
+      background: linear-gradient(135deg, var(--mint), var(--cyan));
+      color: #0f0a1a;
+      box-shadow: 0 10px 28px rgba(0,229,168,0.35);
+      margin-top: 4px;
+    }
+
+    .btn-waitlist:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 14px 32px rgba(0,229,168,0.45);
+    }
+
+    /* Disclaimer */
+    .disclaimer {
+      text-align: center;
+      padding: 22px 0 32px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-weight: 600;
+      border-top: 1px solid var(--border);
+      margin-top: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding-bottom: 36px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    footer span {
+      color: var(--pink);
+    }
+
+    /* Tablet+ */
+    @media (min-width: 520px) {
+      .container {
+        max-width: 560px;
+      }
+
+      nav {
+        display: flex;
+        gap: 18px;
+        align-items: center;
+      }
+
+      nav a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 700;
+        transition: color 0.2s;
+      }
+
+      nav a:hover {
+        color: var(--pink);
+      }
+
+      .hero-ctas {
+        flex-direction: row;
+        max-width: none;
+        justify-content: center;
+      }
+
+      .btn {
+        flex: 1;
+        max-width: 200px;
+      }
+
+      .top6-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .top6-card.surprise {
+        grid-column: auto;
+      }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ========== SPLASH SCREEN ========== */
+    #splash {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #0f0a1a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      transition: opacity 0.7s ease, visibility 0.7s ease;
+    }
+
+    #splash.hide {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 30% 20%, rgba(255,77,141,0.35), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 80% 70%, rgba(168,85,247,0.3), transparent 50%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(0,229,168,0.12), transparent 45%);
+      animation: splashPulse 2.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes splashPulse {
+      0% { opacity: 0.7; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.08); }
+    }
+
+    .splash-logo {
+      position: relative;
+      z-index: 2;
+      width: 96px;
+      height: 96px;
+      background: linear-gradient(135deg, #ff4d8d, #ff7a45);
+      border-radius: 28px;
+      display: grid;
+      place-items: center;
+      font-size: 3rem;
+      box-shadow: 0 12px 40px rgba(255,77,141,0.5), 0 0 0 6px rgba(255,77,141,0.15);
+      animation: splashLogoIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    @keyframes splashLogoIn {
+      0% { opacity: 0; transform: scale(0.3) rotate(-20deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0); }
+    }
+
+    .splash-title {
+      position: relative;
+      z-index: 2;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      background: linear-gradient(90deg, #fff, #ffe566, #ff4d8d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% auto;
+      animation: splashTitleIn 0.7s ease 0.25s both, shine 3s linear 1s infinite;
+    }
+
+    @keyframes splashTitleIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .splash-tag {
+      position: relative;
+      z-index: 2;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #c4b5d4;
+      animation: splashTitleIn 0.7s ease 0.4s both;
+    }
+
+    .splash-loader {
+      position: relative;
+      z-index: 2;
+      width: 48px;
+      height: 4px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 8px;
+      animation: splashTitleIn 0.6s ease 0.55s both;
+    }
+
+    .splash-loader::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 40%;
+      background: linear-gradient(90deg, #ff4d8d, #ffe566);
+      border-radius: 4px;
+      animation: loaderSlide 1.1s ease-in-out infinite;
+    }
+
+    @keyframes loaderSlide {
+      0% { left: -40%; }
+      100% { left: 100%; }
+    }
+
+    .splash-emojis {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .splash-emojis span {
+      position: absolute;
+      font-size: 1.6rem;
+      opacity: 0.5;
+      animation: splashFloat 3.5s ease-in-out infinite;
+    }
+
+    .splash-emojis span:nth-child(1) { top: 12%; left: 10%; animation-delay: 0s; }
+    .splash-emojis span:nth-child(2) { top: 18%; right: 12%; animation-delay: 0.5s; }
+    .splash-emojis span:nth-child(3) { bottom: 22%; left: 14%; animation-delay: 1s; }
+    .splash-emojis span:nth-child(4) { bottom: 16%; right: 10%; animation-delay: 1.4s; }
+    .splash-emojis span:nth-child(5) { top: 45%; left: 6%; animation-delay: 0.7s; font-size: 1.2rem; }
+    .splash-emojis span:nth-child(6) { top: 50%; right: 8%; animation-delay: 1.8s; font-size: 1.3rem; }
+
+    @keyframes splashFloat {
+      0%, 100% { transform: translateY(0) rotate(-10deg) scale(1); }
+      50% { transform: translateY(-14px) rotate(10deg) scale(1.15); }
+    }
+  </style>
+</head>
+<body>
+  <!-- SPLASH SCREEN -->
+  <div id="splash" role="status" aria-live="polite">
+    <div class="splash-bg"></div>
+    <div class="splash-emojis" aria-hidden="true">
+      <span>🍔</span>
+      <span>🧪</span>
+      <span>🧀</span>
+      <span>✨</span>
+      <span>🍩</span>
+      <span>🔥</span>
+    </div>
+    <div class="splash-logo">🍔</div>
+    <div class="splash-title">SandWich We Love</div>
+    <div class="splash-tag">Lab de sabores · versão 1.0</div>
+    <div class="splash-loader"></div>
+  </div>
+
+  <!-- Floating particles -->
+  <div class="particles" id="particles" aria-hidden="true"></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">
+        <div class="logo-mark">🍔</div>
+        <span>SandWich We Love</span>
+      </a>
+      <nav>
+        <a href="#desafios">Desafios</a>
+        <a href="#receitas">Receitas</a>
+        <a href="#votacao">Votação</a>
+      </nav>
+      <button class="btn-enter">Entrar</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-badge">🔬 Lab de Sabores</div>
+        <h1>
+          Os sabores que você conhece.<br>
+          <span class="highlight">A versão que você vai testar.</span>
+        </h1>
+        <p class="hero-sub">
+          Receitas autorais inspiradas em clássicos populares. A gente experimenta no lab. Você decide o que fica.
+        </p>
+
+        <div class="hero-image-wrap">
+          <span class="float-emoji e1">🧪</span>
+          <span class="float-emoji e2">🔥</span>
+          <span class="float-emoji e3">🧀</span>
+          <span class="float-emoji e4">✨</span>
+          <img src="hero-burger.webp" alt="Cientistas analisando um sanduíche gigante no laboratório" width="800" height="1000" loading="eager">
+        </div>
+
+        <div class="hero-ctas">
+          <a href="#episodio" class="btn btn-primary">▶ Ver o episódio</a>
+          <a href="#lista" class="btn btn-secondary">Receber receita grátis</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMO FUNCIONA -->
+    <section id="desafios">
+      <div class="container">
+        <h2 class="section-title">Como <span>funciona</span></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h3>A gente testa</h3>
+              <p>Nossos “cientistas” de sabor reinventam clássicos no lab e documentam cada tentativa.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h3>Você julga</h3>
+              <p>Assista, prove (se quiser) e vote. Seu veredito pesa na decisão final.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h3>A comunidade escolhe</h3>
+              <p>Os favoritos viram receita oficial do ciclo e entram no hall da fama.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOP 6 -->
+    <section id="receitas">
+      <div class="container">
+        <h2 class="section-title">Top 6 do <span>primeiro ciclo</span></h2>
+        <div class="top6-grid">
+          <div class="top6-card">
+            <span class="top6-emoji">🍔</span>
+            <h4>Sanduíche</h4>
+          </div>
+          <div class="top6-card">
+            <span class="top6-emoji">🥧</span>
+            <h4>Tortinha</h4>
+          </div>
+          <div class="top6-card">
+            <span class="top6-emoji">☕</span>
+            <h4>Café</h4>
+          </div>
+          <div class="top6-card">
+            <span class="top6-emoji">🍩</span>
+            <h4>Donut</h4>
+          </div>
+          <div class="top6-card">
+            <span class="top6-emoji">🍪</span>
+            <h4>Biscoito</h4>
+          </div>
+          <div class="top6-card surprise">
+            <span class="top6-emoji">🎁</span>
+            <h4>Surpresa</h4>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WAITLIST -->
+    <section id="lista">
+      <div class="container">
+        <div class="waitlist">
+          <h2>Assine a lista de espera 🚀</h2>
+          <p>Seja o primeiro a votar no próximo desafio e receba a receita grátis.</p>
+          <form class="form-group" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Você entrou! 🎉'; this.querySelector('button').style.background='linear-gradient(135deg,#a855f7,#ff4d8d)';">
+            <input type="text" name="nome" placeholder="Seu nome" required autocomplete="name">
+            <input type="email" name="email" placeholder="Seu melhor e-mail" required autocomplete="email">
+            <button type="submit" class="btn btn-waitlist">Quero votar no próximo</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- DISCLAIMER -->
+  <div class="container">
+    <p class="disclaimer">
+      Nota: conteúdo autoral, não oficial e sem afiliação às marcas.
+    </p>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 <span>SandWich We Love</span> · Feito com 🍔 e ciência</p>
+    </div>
+  </footer>
+
+  <script>
+    // Floating food particles
+    const particles = document.getElementById('particles');
+    const emojis = ['🍔','🍟','🍩','🍪','🧀','🧪','✨','🔥','🥤','🍕'];
+    for (let i = 0; i < 12; i++) {
+      const el = document.createElement('span');
+      el.className = 'particle';
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.left = Math.random() * 100 + '%';
+      el.style.animationDuration = (8 + Math.random() * 12) + 's';
+      el.style.animationDelay = (Math.random() * 8) + 's';
+      el.style.fontSize = (0.9 + Math.random() * 0.8) + 'rem';
+      particles.appendChild(el);
+    }
+
+    // Splash screen
+    const splash = document.getElementById('splash');
+    window.addEventListener('load', () => {
+      // Minimum display time so the animation is felt
+      setTimeout(() => {
+        splash.classList.add('hide');
+        // Remove from DOM after transition for performance
+        setTimeout(() => splash.remove(), 800);
+      }, 2200);
+    });
+  </script>
+</body>
+</html>

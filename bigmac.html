@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Hambúrguer Big Mac — SandWich We Love</title>
+  <meta name="description" content="Receita autoral inspirada no clássico Big Mac. Testamos no lab, você julga.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0a1a;
+      --bg-card: #1a1229;
+      --bg-soft: #241833;
+      --pink: #ff4d8d;
+      --orange: #ff7a45;
+      --yellow: #ffe566;
+      --mint: #00e5a8;
+      --purple: #a855f7;
+      --cyan: #22d3ee;
+      --text: #fff8f0;
+      --text-muted: #c4b5d4;
+      --border: rgba(255,255,255,0.1);
+      --radius: 22px;
+      --shadow: 0 16px 40px rgba(0,0,0,0.4);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Nunito', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 15% 5%, rgba(255,77,141,0.22), transparent 55%),
+        radial-gradient(ellipse 55% 45% at 90% 15%, rgba(168,85,247,0.18), transparent 50%),
+        radial-gradient(ellipse 50% 40% at 50% 95%, rgba(0,229,168,0.12), transparent 45%);
+      pointer-events: none; z-index: 0;
+    }
+    .container { width: 100%; max-width: 480px; margin: 0 auto; padding: 0 18px; position: relative; z-index: 1; }
+
+    /* HEADER */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(15,10,26,0.85);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border); padding: 12px 0;
+    }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .logo {
+      display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text);
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.95rem;
+    }
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--pink), var(--orange));
+      border-radius: 11px; display: grid; place-items: center; font-size: 1.1rem;
+      box-shadow: 0 4px 14px rgba(255,77,141,0.4);
+    }
+    .back-btn {
+      background: var(--bg-soft); border: 1.5px solid var(--border); color: var(--text);
+      font-family: inherit; font-weight: 800; font-size: 0.85rem;
+      padding: 9px 14px; border-radius: 999px; cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .back-btn:hover { border-color: var(--pink); color: var(--pink); }
+
+    /* HERO ANIMATION STAGE */
+    .stage {
+      padding: 20px 0 10px;
+      text-align: center;
+      min-height: 420px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .stage-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.35rem, 6vw, 1.7rem);
+      font-weight: 700; letter-spacing: -0.02em;
+      margin-bottom: 6px;
+      opacity: 0; transform: translateY(20px);
+      animation: titleIn 0.7s ease 0.3s forwards;
+    }
+    .stage-origin {
+      font-size: 0.88rem; font-weight: 700; color: var(--text-muted);
+      margin-bottom: 18px;
+      opacity: 0; animation: titleIn 0.6s ease 0.5s forwards;
+    }
+    .stage-origin span { color: var(--orange); }
+
+    .burger-wrap {
+      position: relative;
+      width: min(340px, 88vw);
+      height: min(340px, 88vw);
+      display: grid; place-items: center;
+      margin: 0 auto 12px;
+    }
+    .burger-img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      border-radius: 28px;
+      filter: drop-shadow(0 20px 40px rgba(255,77,141,0.35));
+      opacity: 0;
+      transform: scale(0.2) rotate(-25deg);
+      animation: burgerSpectacular 2.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s forwards;
+    }
+    @keyframes burgerSpectacular {
+      0% { opacity: 0; transform: scale(0.15) rotate(-40deg) translateY(60px); }
+      35% { opacity: 1; transform: scale(1.15) rotate(12deg) translateY(-10px); }
+      55% { transform: scale(0.92) rotate(-6deg) translateY(5px); }
+      75% { transform: scale(1.06) rotate(4deg) translateY(-3px); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg) translateY(0); }
+    }
+    @keyframes titleIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Sparkles around image */
+    .spark {
+      position: absolute; font-size: 1.5rem; opacity: 0;
+      animation: sparkPop 0.6s ease forwards;
+    }
+    .spark.s1 { top: 8%; left: 5%; animation-delay: 2.2s; }
+    .spark.s2 { top: 12%; right: 8%; animation-delay: 2.35s; }
+    .spark.s3 { bottom: 15%; left: 10%; animation-delay: 2.5s; }
+    .spark.s4 { bottom: 10%; right: 6%; animation-delay: 2.4s; }
+    @keyframes sparkPop {
+      0% { opacity: 0; transform: scale(0); }
+      60% { opacity: 1; transform: scale(1.3); }
+      100% { opacity: 0.85; transform: scale(1); }
+    }
+
+    /* MENU BOXES */
+    .menu-section {
+      padding: 10px 0 40px;
+      opacity: 0; transform: translateY(30px);
+      animation: menuReveal 0.8s ease 2.6s forwards;
+    }
+    @keyframes menuReveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .menu-label {
+      text-align: center; font-size: 0.8rem; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--mint); margin-bottom: 14px;
+    }
+    .menu-grid {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .menu-box {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .menu-box.open {
+      border-color: rgba(255,77,141,0.45);
+      box-shadow: 0 12px 28px rgba(255,77,141,0.18);
+    }
+    .menu-box-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 18px 16px; cursor: pointer; user-select: none;
+      transition: background 0.2s;
+    }
+    .menu-box-header:hover { background: rgba(255,255,255,0.03); }
+    .menu-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      display: grid; place-items: center; font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .menu-icon.ing { background: linear-gradient(135deg, rgba(255,122,69,0.25), rgba(255,77,141,0.2)); }
+    .menu-icon.molho { background: linear-gradient(135deg, rgba(255,229,102,0.25), rgba(255,122,69,0.2)); }
+    .menu-icon.prep { background: linear-gradient(135deg, rgba(0,229,168,0.25), rgba(34,211,238,0.2)); }
+    .menu-box-title {
+      flex: 1; text-align: left;
+    }
+    .menu-box-title h3 {
+      font-size: 1.05rem; font-weight: 800; margin-bottom: 2px;
+    }
+    .menu-box-title p {
+      font-size: 0.82rem; color: var(--text-muted); font-weight: 600;
+    }
+    .chevron {
+      font-size: 1.2rem; color: var(--text-muted);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .menu-box.open .chevron { transform: rotate(180deg); color: var(--pink); }
+
+    .menu-box-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .menu-box.open .menu-box-body { max-height: 1200px; }
+    .menu-box-content {
+      padding: 0 18px 22px;
+      border-top: 1px solid var(--border);
+    }
+    .menu-box-content ul {
+      list-style: none; padding-top: 14px;
+    }
+    .menu-box-content li {
+      position: relative; padding: 8px 0 8px 22px;
+      font-size: 0.95rem; font-weight: 600; color: var(--text);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .menu-box-content li:last-child { border-bottom: none; }
+    .menu-box-content li::before {
+      content: '•'; position: absolute; left: 4px; color: var(--orange);
+      font-weight: 900;
+    }
+    .prep-steps {
+      padding-top: 14px; counter-reset: step;
+    }
+    .prep-step {
+      position: relative; padding: 12px 0 12px 42px;
+      font-size: 0.95rem; font-weight: 600;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      counter-increment: step;
+    }
+    .prep-step:last-child { border-bottom: none; }
+    .prep-step::before {
+      content: counter(step);
+      position: absolute; left: 0; top: 12px;
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, var(--pink), var(--orange));
+      color: #fff; font-size: 0.8rem; font-weight: 800;
+      border-radius: 10px; display: grid; place-items: center;
+    }
+    .tip-box {
+      margin-top: 16px;
+      background: linear-gradient(135deg, rgba(0,229,168,0.12), rgba(34,211,238,0.08));
+      border: 1.5px solid rgba(0,229,168,0.3);
+      border-radius: 14px; padding: 14px 16px;
+    }
+    .tip-box strong {
+      display: block; font-size: 0.85rem; color: var(--mint);
+      margin-bottom: 4px; letter-spacing: 0.03em;
+    }
+    .tip-box p { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
+
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+      margin-bottom: 8px; padding-top: 6px;
+    }
+    .meta-pill {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 999px; padding: 6px 12px;
+      font-size: 0.78rem; font-weight: 700; color: var(--text-muted);
+    }
+    .meta-pill span { color: var(--yellow); }
+
+    footer {
+      text-align: center; padding: 20px 0 36px;
+      font-size: 0.85rem; color: var(--text-muted); font-weight: 600;
+    }
+    footer a { color: var(--pink); text-decoration: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .burger-img { opacity: 1; transform: none; }
+      .menu-section { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-mark">🍔</div>
+        <span>SandWich We Love</span>
+      </a>
+      <a href="index.html" class="back-btn">← Voltar</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="stage">
+      <h1 class="stage-title">Hambúrguer Big Mac</h1>
+      <p class="stage-origin">Inspirado em <span>McDonald's</span> · Lab de Sabores</p>
+      <div class="burger-wrap">
+        <img src="bigmac.webp" alt="Hambúrguer estilo Big Mac" class="burger-img" width="400" height="400">
+        <span class="spark s1">✨</span>
+        <span class="spark s2">🔥</span>
+        <span class="spark s3">🧀</span>
+        <span class="spark s4">🍔</span>
+      </div>
+    </div>
+
+    <section class="menu-section">
+      <div class="container">
+        <p class="menu-label">Toque para abrir</p>
+        <div class="menu-grid">
+          <!-- Ingredientes -->
+          <div class="menu-box" id="box-ing">
+            <div class="menu-box-header" onclick="toggleBox('box-ing')">
+              <div class="menu-icon ing">🥬</div>
+              <div class="menu-box-title">
+                <h3>Ingredientes do sanduíche</h3>
+                <p>Tudo que vai no montar</p>
+              </div>
+              <span class="chevron">▼</span>
+            </div>
+            <div class="menu-box-body">
+              <div class="menu-box-content">
+                <div class="meta-row">
+                  <div class="meta-pill">Origem: <span>McDonald's</span></div>
+                  <div class="meta-pill">Rendimento: <span>1 sanduíche duplo</span></div>
+                </div>
+                <ul>
+                  <li>2 discos de carne bovina moída fina (90g cada)</li>
+                  <li>1 pão de hambúrguer com gergelim fatiado em 3 partes (base, centro e topo)</li>
+                  <li>1 fatia de queijo cheddar processado</li>
+                  <li>1 colher (sopa) de cebola branca cortada em cubos mínimos</li>
+                  <li>1/2 xícara de alface americana cortada em tiras finas</li>
+                  <li>2 fatias de picles de pepino agridoce</li>
+                  <li>Sal refinado e pimenta-do-reino moída a gosto</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Molho -->
+          <div class="menu-box" id="box-molho">
+            <div class="menu-box-header" onclick="toggleBox('box-molho')">
+              <div class="menu-icon molho">🥣</div>
+              <div class="menu-box-title">
+                <h3>Ingredientes do molho</h3>
+                <p>O famoso molho especial</p>
+              </div>
+              <span class="chevron">▼</span>
+            </div>
+            <div class="menu-box-body">
+              <div class="menu-box-content">
+                <ul>
+                  <li>1/2 xícara de maionese tradicional de alta consistência</li>
+                  <li>1 colher (sopa) de relish de picles finamente picadinho</li>
+                  <li>1 colher (sopa) de mostarda amarela clássica</li>
+                  <li>1/2 colher (chá) de páprica doce</li>
+                  <li>1/2 colher (chá) de alho em pó</li>
+                  <li>1/2 colher (chá) de cebola em pó</li>
+                  <li>1 colher (chá) de vinagre de vinho branco</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preparo -->
+          <div class="menu-box" id="box-prep">
+            <div class="menu-box-header" onclick="toggleBox('box-prep')">
+              <div class="menu-icon prep">👨‍🍳</div>
+              <div class="menu-box-title">
+                <h3>Modo de preparo</h3>
+                <p>Passo a passo do lab</p>
+              </div>
+              <span class="chevron">▼</span>
+            </div>
+            <div class="menu-box-body">
+              <div class="menu-box-content">
+                <div class="prep-steps">
+                  <div class="prep-step">Em um recipiente, misture com batedor de arame todos os ingredientes do Molho Especial até homogeneizar por completo. Cubra e leve à geladeira por no mínimo 30 minutos.</div>
+                  <div class="prep-step">Tempere os discos de carne com sal e pimenta-do-reino exclusivamente no momento em que forem para a frigideira ou chapa de ferro bem quente. Frite por cerca de 2 minutos de cada lado sem pressionar a carne.</div>
+                  <div class="prep-step">Toste levemente as superfícies de corte das três partes do pão na chapa com uma película fina de manteiga.</div>
+                  <div class="prep-step">Monte a base: espalhe 1 colher do molho especial, adicione metade da cebola picada, metade da alface, a fatia de queijo cheddar e o primeiro disco de carne quente.</div>
+                  <div class="prep-step">Monte o centro: posicione o pão central, espalhe mais uma colher de molho, o restante da cebola e da alface, as duas fatias de picles e o segundo disco de carne. Finalize cobrindo com o topo do pão com gergelim.</div>
+                </div>
+                <div class="tip-box">
+                  <strong>💡 Dica do Chef</strong>
+                  <p>O segredo da textura do molho é picar o relish e a cebola em escala milimétrica. Quanto mais tempo o molho descansar na geladeira, mais integrados ficarão o vinagre e as especiarias.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 <a href="index.html">SandWich We Love</a> · Conteúdo autoral, sem afiliação</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleBox(id) {
+      const box = document.getElementById(id);
+      const wasOpen = box.classList.contains('open');
+      document.querySelectorAll('.menu-box').forEach(b => b.classList.remove('open'));
+      if (!wasOpen) box.classList.add('open');
+    }
+  </script>
+</body>
+</html>
